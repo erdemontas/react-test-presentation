@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 
 function TodoList({ todoList, setTitle, setItem, setEdit, deleteItem }) {
     const classes = useStyles();
-
+    
     const handleEdit = (item) => {
         setTitle(item.value);
         setEdit();
@@ -41,6 +41,7 @@ function TodoList({ todoList, setTitle, setItem, setEdit, deleteItem }) {
                 :
                 (<List>
                     {todoList.map(item => {
+                        console.log("New item :", item)
                         return (
                             <ListItem key={item.id} button>
                                 <ListItemIcon>

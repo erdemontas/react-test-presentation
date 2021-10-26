@@ -1,5 +1,5 @@
 
-import React, {Component, useRef} from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
@@ -8,6 +8,10 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux'
 import * as actionTypes from '../../store/actions';
+import axios from "axios";
+import { getCardActionsUtilityClass } from '@mui/material';
+import {api} from '../../api'
+
 
 const useStyles = makeStyles({
     root: {
@@ -22,21 +26,21 @@ const useStyles = makeStyles({
 });
 
 
-const Form = ({ title, setTitle, addItem, editItem, edit, error, setError }) => {
+const Form = ({ title, setTitle, addItem, editItem,setItem, edit, error, setError }) => {
     const classes = useStyles();
     const handleChange = (event) => {
         const title = event.target.value;
-        
+
         setTitle(title);
-        if(title.length === 0){
+        if (title.length === 0) {
             setError("Please enter title");
-        }else{
+        } else {
             setError("");
         }
     }
 
     const handleClick = () => {
-        if(title.length === 0){
+        if (title.length === 0) {
             setError("Please enter title");
             return;
         }
@@ -46,17 +50,29 @@ const Form = ({ title, setTitle, addItem, editItem, edit, error, setError }) => 
             addItem();
         }
     }
+
+    const handleFetchClick = async () => {
+        const data = await api.fetchTodo ();
+        for (let i = 0; i < 10; i++) {
+            {   
+                setTitle(data[i].title);
+                addItem();
+            }
+        }
+    }
     return (
         <Container maxWidth="sm" className={classes.root}>
             <Grid container alignItems="center">
                 <Grid item md={12}>
-                    <TextField value={title} onChange={handleChange} 
-                    error={!!error} helperText={error} id="outlined-basic" fullWidth label="Enter Title" multiline variant="outlined" />
+                    <TextField value={title} onChange={handleChange}
+                        error={!!error} helperText={error} id="outlined-basic" fullWidth label="Enter Title" multiline variant="outlined" />
                 </Grid>
                 <Grid item md={12}>
                     <Button className={classes.button} variant="contained" color="primary" onClick={handleClick}>
                         {edit ? "Edit" : "Add"}
                     </Button>
+
+                    <Button className={classes.button} variant="contained" color="secondary" onClick={handleFetchClick}>Fetch todos</Button>
                 </Grid>
             </Grid>
         </Container>
@@ -76,8 +92,7 @@ const mapDispatchToProps = dispatch => {
         setError: (error) => dispatch(actionTypes.setError(error)),
         addItem: () => dispatch(actionTypes.addItem()),
         editItem: () => dispatch(actionTypes.editItem()),
-
     }
 }
-
+export { Form};
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

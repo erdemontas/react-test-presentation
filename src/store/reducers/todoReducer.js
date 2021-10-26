@@ -9,11 +9,13 @@ const initialState = {
 }
 const todoReducer = (state = initialState, action) => {
     switch (action.type) {
+
         case actionTypes.ADD_ITEM:
             const newitem = {
                 id: Date.now(),
                 value: state.title,
             }
+            console.log(newitem)
             return {
                 ...state,
                 items: state.items.concat(newitem),
