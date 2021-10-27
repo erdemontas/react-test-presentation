@@ -16,6 +16,13 @@ describe("Api call tests", () => {
         const response = { data: todos }
         axios.get.mockResolvedValue(response);
         return api.fetchTodo().then(data => expect(data).toEqual(todos));
-        //        return api.fetchTodo().then(data => expect(data).toEqual(todos))
     });
+
+    test("Should fetch todos(with async/await)", async () => {
+        const mockResponse = {data:todos}
+        axios.get.mockResolvedValue(mockResponse)
+        const response = await api.asyncfetchTodo();
+        expect (response.data).toEqual(todos);
+
+    })
 })

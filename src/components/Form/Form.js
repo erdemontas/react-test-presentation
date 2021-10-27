@@ -60,6 +60,7 @@ const Form = ({ title, setTitle, addItem, editItem,setItem, edit, error, setErro
             }
         }
     }
+    
     return (
         <Container maxWidth="sm" className={classes.root}>
             <Grid container alignItems="center">
